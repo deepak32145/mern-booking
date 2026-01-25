@@ -3,6 +3,17 @@ import { check, validationResult } from "express-validator";
 import User from "../models/user";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import verifyToken from "../middleware/auth";
+
+
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: string;
+    }
+  }
+}
+
 const router = express.Router();
 
 router.post(
@@ -43,6 +54,8 @@ router.post(
         );
         res.cookie("auth_token", token, {
           httpOnly: true,
+          sameSite: "lax",
+          path: "/",
           maxAge: 86400000,
         });
         res.status(200).json({ userId: user._id });
@@ -53,5 +66,16 @@ router.post(
     }
   },
 );
+
+router.post("/logout", (req : Request , res : Response) =>{
+  res.cookie("auth_token" , "" , {
+    expires : new Date(0),
+  });
+  res.send();
+});
+
+router.get("/validate-token" , verifyToken , (req : Request , res : Response) =>{
+  res.status(200).json({userId : req.userId});
+} )
 
 export default router;
