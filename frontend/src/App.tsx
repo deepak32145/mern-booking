@@ -1,5 +1,6 @@
 import Layout from "./layouts/Layout";
 import Register from "./pages/Register";
+import Signin from "./pages/Signin";
 import {
   BrowserRouter as Router,
   Route,
@@ -25,6 +26,13 @@ function App() {
           element={
             <Layout>
               <Register />
+            </Layout>
+          }
+        ></Route>
+        <Route path="/sign-in"
+          element = {
+            <Layout>
+              <Signin/>
             </Layout>
           }
         ></Route>

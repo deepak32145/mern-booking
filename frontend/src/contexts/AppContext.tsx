@@ -1,5 +1,8 @@
 import React, { useState, useContext } from "react";
 import Toast from "../components/Toast";
+import { useQuery } from "@tanstack/react-query";
+import * as apiclient from "../api-client";
+
 
 type ToastMessage = {
   message: string;
@@ -18,13 +21,18 @@ export const AppContextProvider = ({
   children: React.ReactNode;
 }) => {
   const [toast, setToast] = useState<ToastMessage | null>(null);
+  const { isError } = useQuery({
+    queryKey: ["validateToken"],
+    queryFn: apiclient.validateToken,
+    retry: false,
+  });
   return (
     <AppContext.Provider
       value={{
         showToast: (message: string, type: "SUCCESS" | "ERROR") => {
           setToast({ message, type });
         },
-        isLoggedIn: false,
+        isLoggedIn: !isError,
       }}
     >
       {children}
@@ -32,7 +40,7 @@ export const AppContextProvider = ({
         <Toast
           message={toast.message}
           type={toast.type}
-          onClose={toast.onClose || (() => {})}
+          onClose={() => setToast(null)}
         />
       )}
     </AppContext.Provider>

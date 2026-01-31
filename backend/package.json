@@ -4,7 +4,8 @@
   "description": "",
   "main": "./src/index.ts",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.ts"
+    "dev": "nodemon --exec ts-node src/index.ts",
+    "build" : "npm install && npx tsc"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +19,8 @@
     "express-validator": "^7.3.1",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.0.0",
-    "mongoose": "^9.1.5"
+    "mongoose": "^9.1.5",
+    "cookie-parser": "^1.4.6"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",

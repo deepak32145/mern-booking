@@ -5,6 +5,7 @@ import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/users";
 import authRoutes from "./routes/auth";
+import path from "path";
 
 mongoose.connect(process.env.MONGO_URL as string);
 
@@ -12,6 +13,8 @@ const app = express();
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static(path.join(__dirname , "../../frontend/dist")));
 
 app.use(cors({
   origin: "http://localhost:5173",

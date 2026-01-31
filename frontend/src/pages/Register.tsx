@@ -25,10 +25,12 @@ const Register = () => {
   const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: apiClient.registerUser,
-    onSuccess: (data: Awaited<ReturnType<typeof apiClient.registerUser>>) => {
-        console.log("data", data);
+    onSuccess: async (
+      data: Awaited<ReturnType<typeof apiClient.registerUser>>,
+    ) => {
+      console.log("data", data);
       showToast("Registration successful", "SUCCESS");
-      queryClient.invalidateQueries({ queryKey: ["validateToken"] });
+      await queryClient.invalidateQueries({ queryKey: ["validateToken"] });
       navigate("/");
     },
     onError: (error: Error) => {

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect , useRef } from "react";
 type ToastProps = {
   message: string;
   type: "SUCCESS" | "ERROR";
@@ -6,14 +6,18 @@ type ToastProps = {
 };
 
 const Toast = ({ message, type, onClose }: ToastProps) => {
+  const timerRef = useRef<number | null>(null);
   useEffect(() => {
-    const timer = setTimeout(() => {
+    timerRef.current = window.setTimeout(() => {
       onClose();
     }, 5000);
+
     return () => {
-      clearTimeout(timer);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
     };
-  }, [onClose]);
+  }, []);
 
   const styles =
     type === "SUCCESS"
