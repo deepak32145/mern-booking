@@ -4,7 +4,7 @@ import type { SignInFormData } from "./pages/Signin";
 const API_BASE_URL = "";
 
 export const registerUser = async (data: formDataRegister) => {
-  const response = await fetch(`${API_BASE_URL}/users/register`, {
+  const response = await fetch(`${API_BASE_URL}/api/users/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -19,7 +19,7 @@ export const registerUser = async (data: formDataRegister) => {
 };
 
 export const validateToken = async () => {
-  const response = await fetch(`${API_BASE_URL}/auth/validate-token`, {
+  const response = await fetch(`${API_BASE_URL}/api/auth/validate-token`, {
     method: "GET",
     credentials: "include",
   });
@@ -31,7 +31,7 @@ export const validateToken = async () => {
 };
 
 export const login = async (data: SignInFormData) => {
-  const response = await fetch(`${API_BASE_URL}/auth/login`, {
+  const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
     method: "POST",
     credentials: "include",
     headers: {
@@ -49,7 +49,7 @@ export const login = async (data: SignInFormData) => {
 };
 
 export const logout = async () => {
-  const response = await fetch(`${API_BASE_URL}/auth/logout`, {
+  const response = await fetch(`${API_BASE_URL}/api/auth/logout`, {
     credentials: "include",
     method: "POST",
   });
