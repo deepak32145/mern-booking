@@ -1,6 +1,8 @@
+import { useAppContext } from "./contexts/AppContext";
 import Layout from "./layouts/Layout";
 import Register from "./pages/Register";
 import Signin from "./pages/Signin";
+import Hotel from "./pages/Hotel";
 import {
   BrowserRouter as Router,
   Route,
@@ -10,6 +12,7 @@ import {
 
 
 function App() {
+  const {isLoggedIn} = useAppContext();
   return (
     <Router>
       <Routes>
@@ -36,6 +39,15 @@ function App() {
             </Layout>
           }
         ></Route>
+        {isLoggedIn && (
+          <>
+          <Route path = "/my-hotels" element = {
+            <Layout>
+              <Hotel/>
+            </Layout>
+          } />
+          </>
+        ) }
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </Router>

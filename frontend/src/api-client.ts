@@ -1,7 +1,7 @@
 import type { formDataRegister } from "./pages/Register";
 import type { SignInFormData } from "./pages/Signin";
 
-const API_BASE_URL = "";
+const API_BASE_URL = "http://localhost:7000";
 
 export const registerUser = async (data: formDataRegister) => {
   const response = await fetch(`${API_BASE_URL}/api/users/register`, {
@@ -53,7 +53,19 @@ export const logout = async () => {
     credentials: "include",
     method: "POST",
   });
-  if(!response.ok) {
+  if (!response.ok) {
     throw new Error("Error during signout");
   }
+};
+
+export const addHotel = async (hotelFormData : FormData) => {
+  const response = await fetch(`${API_BASE_URL}/api/my-hotels`, {
+    credentials: "include",
+    method : "POST",
+    body : hotelFormData
+  });
+  if (!response.ok) {
+    throw new Error("Error during create");
+  }
+  return response.json();
 };
