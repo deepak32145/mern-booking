@@ -61,13 +61,13 @@ const DetailsSection = () => {
         <input
           type="number"
           min={1}
-          {...register("pricerPerNight", {
+          {...register("pricePerNight", {
             required: "This field is required",
           })}
           className="border rounded w-full py-1 px-2 font-normal"
         />
-        {errors.pricerPerNight && (
-          <span className="text-red-500">{errors.pricerPerNight.message}</span>
+        {errors.pricePerNight && (
+          <span className="text-red-500">{errors.pricePerNight.message}</span>
         )}
       </label>
       <label className="text-gray-700 text-sm font-bold max-w-[50%]">

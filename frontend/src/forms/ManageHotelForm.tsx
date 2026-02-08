@@ -13,7 +13,7 @@ export type HotelFormData = {
   country: string;
   description: string;
   type: string;
-  pricerPerNight: number;
+  pricePerNight: number;
   starRating: number;
   facilities: string[];
   imageFiles: File[];
@@ -33,18 +33,35 @@ const ManageHotelForm = ({ hotel, onSave, isLoading }: props) => {
   const { handleSubmit, reset } = formMethods;
 
   useEffect(() => {
-    reset(hotel);
-  }, [hotel]);
+    if (!hotel) return;
+    reset({
+      name: hotel.name,
+      city: hotel.city,
+      country: hotel.country,
+      description: hotel.description,
+      type: hotel.type,
+      pricePerNight: hotel.pricePerNight,
+      starRating: hotel.starRating,
+      adultCount: hotel.adultCount,
+      childCount: hotel.childCount,
+      facilities: hotel.facilities ?? [],
+      imageUrls: hotel.imageUrls ?? [],
+      imageFiles: [], // 👈 IMPORTANT
+    });
+  }, [hotel, reset]);
 
   const onSubmit = handleSubmit((data: HotelFormData) => {
     console.log("submit data", data);
     const formData = new FormData();
+    if(hotel) {
+      formData.append("hotelId" , hotel._id);
+    }
     formData.append("name", data.name);
     formData.append("city", data.city);
     formData.append("country", data.country);
     formData.append("description", data.description);
     formData.append("type", data.type);
-    formData.append("pricePerNight", data.pricerPerNight.toString());
+    formData.append("pricePerNight", data.pricePerNight.toString());
     formData.append("starRating", data.starRating.toString());
     formData.append("adultCount", data.adultCount.toString());
     formData.append("childCount", data.childCount.toString());
@@ -54,9 +71,11 @@ const ManageHotelForm = ({ hotel, onSave, isLoading }: props) => {
         formData.append(`imageUrls`, content);
       });
     }
-    Array.from(data.imageFiles).forEach((data) =>{
-      formData.append("imageFiles" , data)
-    })
+    Array.from(data.imageFiles).forEach((data) => {
+      formData.append("imageFiles", data);
+    });
+
+    console.log("formdata from manage hotel", formData);
 
     onSave(formData);
   });

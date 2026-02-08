@@ -27,7 +27,7 @@ router.post(
       newHotel.facilities =
         typeof req.body.facilities === "string"
           ? JSON.parse(req.body.facilities)
-          : req.body.facilities ?? [];
+          : (req.body.facilities ?? []);
 
       // cast numbers
       newHotel.adultCount = Number(req.body.adultCount);
@@ -50,9 +50,77 @@ router.post(
       console.error(err);
       res.status(500).json({ message: "something went wrong" });
     }
-  }
+  },
 );
 
+router.get("/", verifyToken, async (req: Request, res: Response) => {
+  try {
+    const hotels = await Hotel.find({ userId: req.userId });
+    res.json(hotels);
+  } catch (err) {
+    console.log("err", err);
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
+
+router.get("/:hotelId" , verifyToken , async(req : Request , res : Response) =>{
+  console.log('req params' , req.params);
+  const id = req.params.hotelId.toString();
+  try{
+    const hotels = await Hotel.findOne({
+      _id : id , 
+      userId : req.userId
+    });
+    res.json(hotels);
+  }
+  catch(err){
+    res.status(500).json({message : "something went wrong"});
+  }
+})
+
+
+
+router.put(
+  "/:hotelId",
+  verifyToken,
+  upload.array("imageFiles", 6),
+  async (req: Request, res: Response) => {
+    try {
+      const hotelData: HotelType = req.body;
+      console.log("hotel data", hotelData);
+      hotelData.lastUpdated = new Date();
+      const hotel = await Hotel.findOneAndUpdate(
+        {
+          _id: req.params.hotelId,
+          userId: req.userId,
+        },
+        hotelData,
+        { new: true },
+      );
+      if (!hotel) {
+        return res.status(500).json({ message: "Technical Error" });
+      }
+      let updatedImagesUrls;
+      if (req.files) {
+        const files = req.files as Express.Multer.File[];
+        updatedImagesUrls = await uploadImages(files);
+      }
+
+      if (hotel) {
+        hotel.imageUrls = [
+          ...(updatedImagesUrls || []),
+          ...(hotelData.imageUrls || []),
+        ];
+        await hotel.save();
+        return res.status(201).json(hotel);
+      } else {
+        return res.status(400).json({ message: "not found" });
+      }
+    } catch (err) {
+      res.status(500).json({ message: "something went wrong" });
+    }
+  },
+);
 
 async function uploadImages(image: Express.Multer.File[]) {
   const uploadPromises = image.map(async (data) => {
