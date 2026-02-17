@@ -5,6 +5,7 @@ import Signin from "./pages/Signin";
 import Hotel from "./pages/Hotel";
 import MyHotels from "./pages/My-Hotel";
 import EditHotel from "./pages/Edit-Hotel";
+import Search from "./pages/Search";
 import {
   BrowserRouter as Router,
   Route,
@@ -23,7 +24,11 @@ function App() {
         ></Route>
         <Route
           path="/search"
-          element={<Layout children={<span>search page</span>} />}
+          element={
+            <Layout>
+              <Search />
+            </Layout>
+          }
         ></Route>
         <Route
           path="/register"
@@ -41,6 +46,7 @@ function App() {
             </Layout>
           }
         ></Route>
+
         {isLoggedIn && (
           <>
             <Route
