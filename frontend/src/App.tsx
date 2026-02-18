@@ -12,6 +12,7 @@ import {
   Routes,
   Navigate,
 } from "react-router-dom";
+import Detail from "./pages/Detail";
 
 function App() {
   const { isLoggedIn } = useAppContext();
@@ -43,6 +44,14 @@ function App() {
           element={
             <Layout>
               <Signin />
+            </Layout>
+          }
+        ></Route>
+        <Route
+          path="/detail/:hotelId"
+          element={
+            <Layout>
+              <Detail />
             </Layout>
           }
         ></Route>

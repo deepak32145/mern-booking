@@ -1,4 +1,4 @@
-import type { HotelSearchResponse } from "../../backend/src/models/hotel";
+import type { HotelSearchResponse, HotelType } from "../../backend/src/models/hotel";
 import type { formDataRegister } from "./pages/Register";
 import type { SignInFormData } from "./pages/Signin";
 
@@ -145,6 +145,14 @@ export const searchHotels = async (
 
   if (!response.ok) {
     throw new Error("Error in fetching data");
+  }
+  return response.json();
+};
+
+export const getHotelById = async (hotelId: string) : Promise<HotelType> => {
+  const response = await fetch(`${API_BASE_URL}/api/search-hotel/${hotelId}`);
+  if (!response.ok) {
+    throw new Error("Something went wrong");
   }
   return response.json();
 };

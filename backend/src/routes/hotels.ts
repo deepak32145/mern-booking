@@ -120,4 +120,15 @@ const constructSearchQuery = (queryParams: any) => {
   return constructedQuery;
 };
 
+router.get("/:id", async (req, res) => {
+  const id = req.params.id.toString();
+  try {
+    const hotel = await Hotel.findById(id);
+    res.json(hotel);
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "something went wrong" });
+  }
+});
+
 export default router;
