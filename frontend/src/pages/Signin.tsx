@@ -3,6 +3,7 @@ import * as apiClient from "../api-client";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppContext } from "../contexts/AppContext";
+import { useLocation } from "react-router-dom";
 export type SignInFormData = {
   email: string;
   password: string;
@@ -12,6 +13,8 @@ const Signin = () => {
   const { showToast } = useAppContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const location = useLocation();
+  console.log("location", location);
 
   const mutation = useMutation({
     mutationFn: apiClient.login,
@@ -19,7 +22,7 @@ const Signin = () => {
       showToast("Login Successful", "SUCCESS");
       console.log("data", data);
       queryClient.invalidateQueries({ queryKey: ["validateToken"] });
-      navigate("/");
+      navigate(location.state?.from?.pathname || "/");
     },
     onError: (error: Error) => {
       showToast("Login Failed: " + error.message, "ERROR");

@@ -4,6 +4,19 @@ import { Link } from "react-router-dom";
 import { BsBuilding, BsMap } from "react-icons/bs";
 import { BiHotel, BiMoney, BiStar } from "react-icons/bi";
 
+interface Hotel {
+  _id: string;
+  name: string;
+  description: string;
+  city: string;
+  country: string;
+  type: string;
+  pricePerNight: number;
+  adultCount: number;
+  childCount: number;
+  starRating: number;
+}
+
 const MyHotels = () => {
   const { data, isLoading, error } = useQuery({
     queryKey: ["hotes"],
@@ -23,7 +36,7 @@ const MyHotels = () => {
         </Link>
       </span>
       <div className="grid grid-cols-1 gap-8">
-        {data.map((hotel, index: number) => (
+        {data.map((hotel: Hotel, index: number) => (
           <div
             key={index}
             data-testid="hotel-card"

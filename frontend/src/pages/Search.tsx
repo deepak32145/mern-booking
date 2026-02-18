@@ -89,7 +89,7 @@ const Search = () => {
             onChange={handleFacilityChange}
           />
           <PriceFilter
-            selectedPrice={selectedPrice}
+            selectedPrice={selectedPrice || 0}
             onChange={(value?: number) => setSelectedPrice(value)}
           />
         </div>
