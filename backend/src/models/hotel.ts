@@ -15,6 +15,7 @@ export type HotelType = {
   starRating: number;
   imageUrls: string[];
   lastUpdated: Date;
+  bookings: BookingType[];
 };
 
 export type HotelSearchResponse = {
@@ -25,6 +26,31 @@ export type HotelSearchResponse = {
     pages: number;
   };
 };
+
+export type BookingType = {
+  _id: string;
+  userId: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  adultCount: number;
+  childCount: number;
+  checkIn: Date;
+  checkOut: Date;
+  totalCost: number;
+};
+const bookingSchema = new mongoose.Schema<BookingType>({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true },
+  adultCount: { type: Number, required: true },
+  childCount: { type: Number, required: true },
+  checkIn: { type: Date, required: true },
+  checkOut: { type: Date, required: true },
+  userId: { type: String, required: true },
+  totalCost: { type: Number, required: true },
+});
+
 
 const hotelSchema = new mongoose.Schema<HotelType>({
   userId: { type: String },
@@ -40,7 +66,9 @@ const hotelSchema = new mongoose.Schema<HotelType>({
   starRating: { type: Number },
   imageUrls: [{ type: String }],
   lastUpdated: { type: Date },
+  bookings : [bookingSchema]
 });
+
 
 const Hotel = mongoose.model<HotelType>("Hotel", hotelSchema);
 

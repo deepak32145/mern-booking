@@ -156,3 +156,13 @@ export const getHotelById = async (hotelId: string) : Promise<HotelType> => {
   }
   return response.json();
 };
+
+export const getUserInfo = async() =>{
+  const response = await fetch(`${API_BASE_URL}/api/users/me` , {
+    credentials : "include"
+  });
+  if(!response.ok) {
+    throw new Error("something went wrong")
+  }
+  return response.json();
+}

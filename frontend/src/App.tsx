@@ -13,6 +13,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Detail from "./pages/Detail";
+import Booking from "./pages/Booking";
 
 function App() {
   const { isLoggedIn } = useAppContext();
@@ -81,6 +82,14 @@ function App() {
                 </Layout>
               }
               path="/edit-hotel/:hotelId"
+            ></Route>
+            <Route
+              path="/hotel/:hotelId/booking"
+              element={
+                <Layout>
+                  <Booking />
+                </Layout>
+              }
             ></Route>
           </>
         )}
