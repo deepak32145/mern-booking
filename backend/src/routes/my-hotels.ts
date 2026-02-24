@@ -68,9 +68,9 @@ router.get("/:hotelId" , verifyToken , async(req : Request , res : Response) =>{
   const id = req.params.hotelId.toString();
   try{
     const hotels = await Hotel.findOne({
-      _id : id , 
-      userId : req.userId
+      _id : id 
     });
+    console.log('hotels' , hotels);
     res.json(hotels);
   }
   catch(err){

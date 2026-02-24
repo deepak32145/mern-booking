@@ -102,7 +102,7 @@ router.post(
   verifyToken,
   async (req: Request, res: Response) => {
     try {
-      const paymentIntentId = req.body.paymentIntent;
+      const paymentIntentId = req.body.paymentIntentId;
       const paymentIntent = await stripe.paymentIntents.retrieve(
         paymentIntentId as string,
       );
@@ -126,16 +126,16 @@ router.post(
         userId: req.userId,
       };
 
-      const hotel = await Hotel.findOneAndUpdate(
-        { _id: req.params.hotelId },
-        {
-          $push: { bookings: newBooking },
-        },
-      );
+      console.log('new booking' , newBooking);
+
+      const hotel = await Hotel.findById(req.params.hotelId);
+
+
+
       if (!hotel) {
         return res.status(400).json({ message: "hotel not found" });
       }
-
+      hotel.bookings.push(newBooking);
       await hotel?.save();
       res.status(200).send();
     } catch (err) {

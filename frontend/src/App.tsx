@@ -14,6 +14,7 @@ import {
 } from "react-router-dom";
 import Detail from "./pages/Detail";
 import Booking from "./pages/Booking";
+import MyBookings from "./pages/MyBookings";
 
 function App() {
   const { isLoggedIn } = useAppContext();
@@ -91,6 +92,14 @@ function App() {
                 </Layout>
               }
             ></Route>
+            <Route
+              path="/my-bookings"
+              element={
+                <Layout>
+                  <MyBookings />
+                </Layout>
+              }
+            />
           </>
         )}
         <Route path="*" element={<Navigate to="/" />} />

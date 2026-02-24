@@ -1,4 +1,8 @@
-import type { HotelSearchResponse, HotelType } from "../../backend/src/models/hotel";
+import type {
+  HotelSearchResponse,
+  HotelType,
+} from "../../backend/src/models/hotel";
+import type { BookingFormData } from "./forms/BookingForm";
 import type { formDataRegister } from "./pages/Register";
 import type { SignInFormData } from "./pages/Signin";
 
@@ -149,7 +153,7 @@ export const searchHotels = async (
   return response.json();
 };
 
-export const getHotelById = async (hotelId: string) : Promise<HotelType> => {
+export const getHotelById = async (hotelId: string): Promise<HotelType> => {
   const response = await fetch(`${API_BASE_URL}/api/search-hotel/${hotelId}`);
   if (!response.ok) {
     throw new Error("Something went wrong");
@@ -157,12 +161,60 @@ export const getHotelById = async (hotelId: string) : Promise<HotelType> => {
   return response.json();
 };
 
-export const getUserInfo = async() =>{
-  const response = await fetch(`${API_BASE_URL}/api/users/me` , {
-    credentials : "include"
+export const getUserInfo = async () => {
+  const response = await fetch(`${API_BASE_URL}/api/users/me`, {
+    credentials: "include",
   });
-  if(!response.ok) {
-    throw new Error("something went wrong")
+  if (!response.ok) {
+    throw new Error("something went wrong");
   }
   return response.json();
-}
+};
+
+export const paymentIntent = async (
+  hotelId: string,
+  numberOfNights: string,
+) => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/search-hotel/${hotelId}/bookings/payment-intent`,
+    {
+      credentials: "include",
+      method: "POST",
+      body: JSON.stringify({ numberOfNights }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    },
+  );
+  if (!response.ok) {
+    throw new Error("something went wrong");
+  }
+  return response.json();
+};
+
+export const createRoomBooking = async (formData: BookingFormData) => {
+  const response = await fetch(
+    `${API_BASE_URL}/api/search-hotel/${formData.hotelId}/bookings`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(formData),
+    },
+  );
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+};
+
+export const myBookings = async (): Promise<HotelType[]> => {
+  const response = await fetch(`${API_BASE_URL}/api/bookings`, {
+    credentials: "include",
+  });
+  if (!response.ok) {
+    throw new Error("Something went wrong");
+  }
+  return response.json();
+};
